@@ -229,6 +229,11 @@ public boolean camposLLenos(){
         });
 
         btnBuscarPropiedad.setText("Buscar");
+        btnBuscarPropiedad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPropiedadActionPerformed(evt);
+            }
+        });
 
         btnEliminarPropiedad.setText("Eliminar");
         btnEliminarPropiedad.addActionListener(new java.awt.event.ActionListener() {
@@ -517,6 +522,51 @@ public boolean camposLLenos(){
         // TODO add your handling code here
         Editar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnBuscarPropiedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPropiedadActionPerformed
+         String NumPro = txtNumPropiedad.getText();
+        
+        if (NumPro.isEmpty() == true) {
+                 JOptionPane.showMessageDialog(null,"Se requiere un Numero de propiedad para Buscar "+JOptionPane.INFORMATION_MESSAGE);
+                 return;
+             }else{
+                 
+                try {
+                    Propiedad algo = control_propiedad.findPropiedad(NumPro);
+                    if (algo == null) {
+                        JOptionPane.showMessageDialog(this, "La Propiedad a buscar no existe en el sistema");
+                        return;
+                    }else{
+                        LimpiarFormulario();
+                        
+                         Object prop[]= null;            
+                                
+                        modelo2.addRow(prop);
+                        modelo2.setValueAt(algo.getNumpropiedad(),0,0);
+                        modelo2.setValueAt(algo.getCalle(),0,1);
+                        modelo2.setValueAt(algo.getCiudad(),0,2);
+                        modelo2.setValueAt(algo.getCodigopostal(),0,3);
+                        modelo2.setValueAt(algo.getTipo(),0,4);
+                        modelo2.setValueAt(algo.getRenta(),0,5);
+                        modelo2.setValueAt(algo.getHab(),0,6);
+                        modelo2.setValueAt(algo.getNumpropietario(),0,7);
+                        modelo2.setValueAt(algo.getNumempleado().getNumempleado(),0,8); 
+            
+                       /* 
+                        txtNumPropietario.setText(algo.getNumpropietario());
+                        txtCiudad.setText(algo.getCiudad());
+                        txtCodPostal.setText(algo.getCodigopostal());
+                        txtDireccion.setText(algo.getCalle());
+                        txtTipo.setText(algo.getTipo());
+                        
+                      */
+                    }
+                
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+                }
+    }//GEN-LAST:event_btnBuscarPropiedadActionPerformed
 
     public static DefaultTableModel modelo2;
     private void CrearModelotblPropiedad(){
