@@ -7,6 +7,7 @@ package dreamhome;
 
 import CONTROLADOR.ConexionEM;
 import CONTROLADOR.PropiedadDB;
+import CONTROLADOR.PropiedadJpaController;
 import MODELO.Empleado;
 import MODELO.Propiedad;
 import java.math.BigInteger;
@@ -25,30 +26,17 @@ public final class MantenedorPropiedad extends javax.swing.JFrame {
     ArrayList<Propiedad> propiedad;
     PropiedadDB db = new PropiedadDB();
     EntityManager con =  ConexionEM.getConexion();
+    PropiedadJpaController  control_propiedad = new PropiedadJpaController();
     
     /**
      * Creates new form MantenedorPropiedad
      */
     public MantenedorPropiedad() {
         initComponents();
-        ListarPropiedades();
+        CrearModelotblPropiedad();
         LimpiarFormulario();
     }
-public void ListarPropiedades(){
-    //propiedad = db.ListPropiedad();
-   /* List<Propiedad> propiedad = con.createQuery("SELECT NUMPROPIEDAD,CALLE,CIUDAD,CODIGOPOSTAL,TIPO,HAB,RENTA,NUMPROPIETARIO,NUMEMPLEADO"
-                    + "                            FROM PROPIEDAD"
-                    + "                            ORDER BY NUMPROPIEDAD").getResultList();*/
-    
-    
-   // DefaultTableModel tb = (DefaultTableModel)tblPropiedad.getModel();
-   // for(Propiedad prd :propiedad) {
-   //     tb.addRow(new Object[]{prd.getNumpropiedad(),prd.getCalle(),prd.getCiudad(),prd.getCodigopostal(),prd.getTipo(),prd.getHab(),prd.getRenta(),prd.getNumpropietario(),prd.getNumempleado()});
-   //
-   // }
-    
-    
-}
+
 public void LimpiarFormulario(){
     DefaultTableModel tb = (DefaultTableModel)tblPropiedad.getModel();
     for (int i = tb.getRowCount()-1; i >= 0; i--) {
@@ -308,7 +296,8 @@ public void LimpiarFormulario(){
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
         LimpiarFormulario();
-        ListarPropiedades();
+        Llenartabla();
+       
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnIngresarPropiedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPropiedadActionPerformed
@@ -341,25 +330,70 @@ public void LimpiarFormulario(){
             
             System.out.println("Guardado");
         }
-        
-      /*  if ("".equals(txtNumPropiedad.getText())&&!"".equals(txtNumPropietario.getText())) {
-            JOptionPane.showMessageDialog(this, "Los Datos fueron Ingresados","",JOptionPane.INFORMATION_MESSAGE);
-            db.InsertarPropiedad(prd);
-            con.getTransaction().begin();
-            con.persist(prd);
-            con.getTransaction().commit();
-            
-            LimpiarFormulario();
-            ListarPropiedades();
-        }else{
-            JOptionPane.showMessageDialog(this, "Falta Ingresar Datos","",JOptionPane.ERROR_MESSAGE);
-        }*/
-        
-        
-        
-        
+
     }//GEN-LAST:event_btnIngresarPropiedadActionPerformed
 
+    public static DefaultTableModel modelo2;
+    private void CrearModelotblPropiedad(){
+    try {
+    modelo2 = (new DefaultTableModel(
+        null, new String [] {
+        "NumPropiedad","Direccion","Ciudad","Codigo Postal",
+        "Tipo","Renta","Habitaciones","NumPropietario","NumEmpleado"}){
+        Class[] types = new Class [] {
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class,
+        java.lang.String.class
+        };
+        boolean[] canEdit = new boolean [] {
+        false,false,false,false,false,false,false,false,false
+        };
+        @Override
+        public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+        }
+        @Override
+        public boolean isCellEditable(int rowIndex, int colIndex){
+        return canEdit [colIndex];
+        }
+        });
+        tblPropiedad.setModel(modelo2);
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,e.toString()+"error2");
+        }
+        }
+    
+    private void Llenartabla(){
+        try {
+            Object prop[]= null;
+            List<Propiedad> listPropiedad;
+            
+            listPropiedad = control_propiedad.findPropiedadEntities();
+            
+            for (int i = 0; i < listPropiedad.size(); i++) {
+                modelo2.addRow(prop);
+                modelo2.setValueAt(listPropiedad.get(i).getNumpropiedad(), i, 0);
+                modelo2.setValueAt(listPropiedad.get(i).getCalle(), i, 1);
+                modelo2.setValueAt(listPropiedad.get(i).getCiudad(), i, 2);
+                modelo2.setValueAt(listPropiedad.get(i).getCodigopostal(), i, 3);
+                modelo2.setValueAt(listPropiedad.get(i).getTipo(), i, 4);
+                modelo2.setValueAt(listPropiedad.get(i).getRenta(), i, 5);
+                modelo2.setValueAt(listPropiedad.get(i).getHab(), i, 6);
+                modelo2.setValueAt(listPropiedad.get(i).getNumpropietario(), i, 7);
+                modelo2.setValueAt(listPropiedad.get(i).getNumempleado(), i, 8);
+                
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
     /**
      * @param args the command line arguments
      */
