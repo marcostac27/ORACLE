@@ -71,10 +71,11 @@ public void Editar(){
 }
 
 public void Actualizar(){
-    
+    Propiedad pro2 = null;
     if (camposLLenos()&&p!=null) {
          Empleado e=con.find(Empleado.class, txtNumEmpleado.getText());
         if (e!=null) {
+            pro2 = con.find(Propiedad.class, txtNumPropiedad.getText());
             p=null;
         p=new Propiedad();
         p.setNumpropiedad(txtNumPropiedad.getSelectedText());
@@ -86,10 +87,21 @@ public void Actualizar(){
         p.setHab(new BigInteger(txtNumHab.getText()));
         p.setNumpropietario(txtNumPropietario.getText());
         p.setNumempleado(e);
+        
+        pro2.setNumpropiedad(txtNumPropiedad.getSelectedText());
+        pro2.setCalle(txtDireccion.getText());
+        pro2.setCiudad(txtCiudad.getText());
+        pro2.setCodigopostal(txtCodPostal.getText());
+        pro2.setTipo(txtTipo.getText());
+        pro2.setRenta(new BigInteger(txtRenta.getText()));
+        pro2.setHab(new BigInteger(txtNumHab.getText()));
+        pro2.setNumpropietario(txtNumPropietario.getText());
+        pro2.setNumempleado(e);
+        
         con.getTransaction().begin();
-        con.persist(p);
+        con.merge(pro2);
         con.getTransaction().commit();
-        JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Ediatdo con Exito ","Editar Propiedad",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Editado con Exito ","Editar Propiedad",JOptionPane.INFORMATION_MESSAGE);
             p=null;
         }else{
            JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" No se puedo Editar ","Editar Propiedad",JOptionPane.ERROR_MESSAGE);
