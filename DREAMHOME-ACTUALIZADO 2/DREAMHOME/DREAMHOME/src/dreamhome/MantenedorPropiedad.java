@@ -304,11 +304,11 @@ public boolean Eliminar_propiedad(String id){
     private void btnEliminarPropiedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPropiedadActionPerformed
         // TODO add your handling code here:
         if (Eliminar_propiedad(txtNumPropiedad.getText())) {
-            JOptionPane.showMessageDialog(null,"Pripiedad Nº "+txtNumPropiedad+" Eliminado ","Eliminar Propiedad",JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Eliminado ","Eliminar Propiedad",JOptionPane.INFORMATION_MESSAGE);
             
         }else
         {
-            JOptionPane.showMessageDialog(null,"Pripiedad Nº "+txtNumPropiedad+" NO se pudo Eliminar","Eliminar Propiedad",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" NO se pudo Eliminar","Eliminar Propiedad",JOptionPane.ERROR_MESSAGE);
             
         }
         
@@ -347,8 +347,10 @@ public boolean Eliminar_propiedad(String id){
             con.getTransaction().begin();
             con.persist(p);
             con.getTransaction().commit();
-            
+            JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Ingresada ","Ingresar Propiedad",JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Guardado");
+        }else{
+            JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Ingresado ","Ingresar Propiedad",JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnIngresarPropiedadActionPerformed
@@ -406,10 +408,8 @@ public boolean Eliminar_propiedad(String id){
                 modelo2.setValueAt(listPropiedad.get(i).getRenta(), i, 5);
                 modelo2.setValueAt(listPropiedad.get(i).getHab(), i, 6);
                 modelo2.setValueAt(listPropiedad.get(i).getNumpropietario(), i, 7);
-                modelo2.setValueAt(listPropiedad.get(i).getNumempleado().getNumempleado(), i, 8);
-                
+                modelo2.setValueAt(listPropiedad.get(i).getNumempleado().getNumempleado(), i, 8); 
             }
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
