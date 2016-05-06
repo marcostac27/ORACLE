@@ -7,6 +7,7 @@ package CONTROLADOR;
 
 import MODELO.Propiedad;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,6 +18,12 @@ import java.util.ArrayList;
  * @author Francisco
  */
 public class PropiedadDB {
+    
+    private Connection cnx;
+
+    public PropiedadDB(Connection cnx) {
+        this.cnx = cnx;
+    }
     
     public ArrayList<Propiedad> ListPropiedad(){
         ArrayList<Propiedad> propiedad = new ArrayList();
@@ -75,5 +82,36 @@ public class PropiedadDB {
             */      
            
         }
+    
+    
+        public Propiedad obtenerPropiedad (Propiedad pr)
+        {
+        String sql = "SELECT * PROPIEDAD where NUMPROPIEDAD = ?";
+        Propiedad prop = null;
+        try{
+            PreparedStatement stm = cnx.prepareStatement(sql);
+            stm.setString(1, pr.getNumpropiedad());
+            ResultSet resultado = stm.executeQuery();
+            if(resultado.next()){
+                prop = new Propiedad(resultado.getString(1), resultado.getString(2));
+            }
+            return prop;
+        }catch(SQLException ex){
+            throw new RuntimeException("Error al recuperar la propiedad",ex);
+        }
+    }
+    
+        public int eliminarPropiedad(Propiedad pro){
+        String sql = "DELETE FROM PROPIEDAD WHERE NUMPROPIEDAD = ?";
+        int respuesta = -1;
+        try {
+            PreparedStatement stm = cnx.prepareStatement(sql);
+            stm.setString(1, pro.getNumpropiedad());
+            respuesta = stm.executeUpdate();
+            return respuesta;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al recuperar la propiedad", ex);
+        }
+    }
     }
 
