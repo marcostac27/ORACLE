@@ -72,11 +72,13 @@ public void Editar(){
 
 public void Actualizar(){
     Propiedad pro2 = null;
+    con.getTransaction().begin();
     if (camposLLenos()&&p!=null) {
          Empleado e=con.find(Empleado.class, txtNumEmpleado.getText());
-        if (e!=null) {
-            pro2 = con.find(Propiedad.class, txtNumPropiedad.getText());
-            p=null;
+          pro2 = con.find(Propiedad.class, txtNumPropiedad.getText());
+        if (e!=null&&pro2!=null) {
+           
+         /*   p=null;
         p=new Propiedad();
         p.setNumpropiedad(txtNumPropiedad.getSelectedText());
         p.setCalle(txtDireccion.getText());
@@ -87,8 +89,8 @@ public void Actualizar(){
         p.setHab(new BigInteger(txtNumHab.getText()));
         p.setNumpropietario(txtNumPropietario.getText());
         p.setNumempleado(e);
-        
-        pro2.setNumpropiedad(txtNumPropiedad.getSelectedText());
+        */
+        //pro2.setNumpropiedad(txtNumPropiedad.getSelectedText());
         pro2.setCalle(txtDireccion.getText());
         pro2.setCiudad(txtCiudad.getText());
         pro2.setCodigopostal(txtCodPostal.getText());
@@ -97,10 +99,24 @@ public void Actualizar(){
         pro2.setHab(new BigInteger(txtNumHab.getText()));
         pro2.setNumpropietario(txtNumPropietario.getText());
         pro2.setNumempleado(e);
-        
-        con.getTransaction().begin();
-        con.merge(pro2);
         con.getTransaction().commit();
+            try {
+                if (pro2.getNumpropiedad()!=null) {
+                    
+                    System.out.println("valor nulo");
+                }else
+                {
+                    System.out.println("no  nulo");
+                }
+                con.close();
+            } catch (Exception ex) {
+                
+                ex.printStackTrace();
+               
+            }
+       
+      
+       
         JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Editado con Exito ","Editar Propiedad",JOptionPane.INFORMATION_MESSAGE);
             p=null;
         }else{
@@ -488,6 +504,7 @@ public boolean camposLLenos(){
         //6 hab
         //7numPropietario
         //8 num emplpeado
+        con.getTransaction().begin();
         int fila=tblPropiedad.rowAtPoint(evt.getPoint());
         if (fila!=-1) {
            
@@ -506,6 +523,7 @@ public boolean camposLLenos(){
              p.setNumpropietario((String)tblPropiedad.getValueAt(fila,7));
             
             p.setNumempleado(e);
+            con.close();
             }
            
             
