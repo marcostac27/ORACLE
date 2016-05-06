@@ -17,7 +17,6 @@ import MODELO.Empleado;
 import MODELO.Propiedad;
 import MODELO.Visita;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,8 +38,8 @@ public class PropiedadJpaController implements Serializable {
     }
 
     public void create(Propiedad propiedad) throws PreexistingEntityException, Exception {
-        if (propiedad.getVisitaCollection() == null) {
-            propiedad.setVisitaCollection(new ArrayList<Visita>());
+        if (propiedad.getVisitaList() == null) {
+            propiedad.setVisitaList(new ArrayList<Visita>());
         }
         EntityManager em = null;
         try {
@@ -51,24 +50,24 @@ public class PropiedadJpaController implements Serializable {
                 numempleado = em.getReference(numempleado.getClass(), numempleado.getNumempleado());
                 propiedad.setNumempleado(numempleado);
             }
-            Collection<Visita> attachedVisitaCollection = new ArrayList<Visita>();
-            for (Visita visitaCollectionVisitaToAttach : propiedad.getVisitaCollection()) {
-                visitaCollectionVisitaToAttach = em.getReference(visitaCollectionVisitaToAttach.getClass(), visitaCollectionVisitaToAttach.getNumvisita());
-                attachedVisitaCollection.add(visitaCollectionVisitaToAttach);
+            List<Visita> attachedVisitaList = new ArrayList<Visita>();
+            for (Visita visitaListVisitaToAttach : propiedad.getVisitaList()) {
+                visitaListVisitaToAttach = em.getReference(visitaListVisitaToAttach.getClass(), visitaListVisitaToAttach.getNumvisita());
+                attachedVisitaList.add(visitaListVisitaToAttach);
             }
-            propiedad.setVisitaCollection(attachedVisitaCollection);
+            propiedad.setVisitaList(attachedVisitaList);
             em.persist(propiedad);
             if (numempleado != null) {
-                numempleado.getPropiedadCollection().add(propiedad);
+                numempleado.getPropiedadList().add(propiedad);
                 numempleado = em.merge(numempleado);
             }
-            for (Visita visitaCollectionVisita : propiedad.getVisitaCollection()) {
-                Propiedad oldNumpropiedadOfVisitaCollectionVisita = visitaCollectionVisita.getNumpropiedad();
-                visitaCollectionVisita.setNumpropiedad(propiedad);
-                visitaCollectionVisita = em.merge(visitaCollectionVisita);
-                if (oldNumpropiedadOfVisitaCollectionVisita != null) {
-                    oldNumpropiedadOfVisitaCollectionVisita.getVisitaCollection().remove(visitaCollectionVisita);
-                    oldNumpropiedadOfVisitaCollectionVisita = em.merge(oldNumpropiedadOfVisitaCollectionVisita);
+            for (Visita visitaListVisita : propiedad.getVisitaList()) {
+                Propiedad oldNumpropiedadOfVisitaListVisita = visitaListVisita.getNumpropiedad();
+                visitaListVisita.setNumpropiedad(propiedad);
+                visitaListVisita = em.merge(visitaListVisita);
+                if (oldNumpropiedadOfVisitaListVisita != null) {
+                    oldNumpropiedadOfVisitaListVisita.getVisitaList().remove(visitaListVisita);
+                    oldNumpropiedadOfVisitaListVisita = em.merge(oldNumpropiedadOfVisitaListVisita);
                 }
             }
             em.getTransaction().commit();
@@ -92,15 +91,15 @@ public class PropiedadJpaController implements Serializable {
             Propiedad persistentPropiedad = em.find(Propiedad.class, propiedad.getNumpropiedad());
             Empleado numempleadoOld = persistentPropiedad.getNumempleado();
             Empleado numempleadoNew = propiedad.getNumempleado();
-            Collection<Visita> visitaCollectionOld = persistentPropiedad.getVisitaCollection();
-            Collection<Visita> visitaCollectionNew = propiedad.getVisitaCollection();
+            List<Visita> visitaListOld = persistentPropiedad.getVisitaList();
+            List<Visita> visitaListNew = propiedad.getVisitaList();
             List<String> illegalOrphanMessages = null;
-            for (Visita visitaCollectionOldVisita : visitaCollectionOld) {
-                if (!visitaCollectionNew.contains(visitaCollectionOldVisita)) {
+            for (Visita visitaListOldVisita : visitaListOld) {
+                if (!visitaListNew.contains(visitaListOldVisita)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Visita " + visitaCollectionOldVisita + " since its numpropiedad field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Visita " + visitaListOldVisita + " since its numpropiedad field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -110,30 +109,30 @@ public class PropiedadJpaController implements Serializable {
                 numempleadoNew = em.getReference(numempleadoNew.getClass(), numempleadoNew.getNumempleado());
                 propiedad.setNumempleado(numempleadoNew);
             }
-            Collection<Visita> attachedVisitaCollectionNew = new ArrayList<Visita>();
-            for (Visita visitaCollectionNewVisitaToAttach : visitaCollectionNew) {
-                visitaCollectionNewVisitaToAttach = em.getReference(visitaCollectionNewVisitaToAttach.getClass(), visitaCollectionNewVisitaToAttach.getNumvisita());
-                attachedVisitaCollectionNew.add(visitaCollectionNewVisitaToAttach);
+            List<Visita> attachedVisitaListNew = new ArrayList<Visita>();
+            for (Visita visitaListNewVisitaToAttach : visitaListNew) {
+                visitaListNewVisitaToAttach = em.getReference(visitaListNewVisitaToAttach.getClass(), visitaListNewVisitaToAttach.getNumvisita());
+                attachedVisitaListNew.add(visitaListNewVisitaToAttach);
             }
-            visitaCollectionNew = attachedVisitaCollectionNew;
-            propiedad.setVisitaCollection(visitaCollectionNew);
+            visitaListNew = attachedVisitaListNew;
+            propiedad.setVisitaList(visitaListNew);
             propiedad = em.merge(propiedad);
             if (numempleadoOld != null && !numempleadoOld.equals(numempleadoNew)) {
-                numempleadoOld.getPropiedadCollection().remove(propiedad);
+                numempleadoOld.getPropiedadList().remove(propiedad);
                 numempleadoOld = em.merge(numempleadoOld);
             }
             if (numempleadoNew != null && !numempleadoNew.equals(numempleadoOld)) {
-                numempleadoNew.getPropiedadCollection().add(propiedad);
+                numempleadoNew.getPropiedadList().add(propiedad);
                 numempleadoNew = em.merge(numempleadoNew);
             }
-            for (Visita visitaCollectionNewVisita : visitaCollectionNew) {
-                if (!visitaCollectionOld.contains(visitaCollectionNewVisita)) {
-                    Propiedad oldNumpropiedadOfVisitaCollectionNewVisita = visitaCollectionNewVisita.getNumpropiedad();
-                    visitaCollectionNewVisita.setNumpropiedad(propiedad);
-                    visitaCollectionNewVisita = em.merge(visitaCollectionNewVisita);
-                    if (oldNumpropiedadOfVisitaCollectionNewVisita != null && !oldNumpropiedadOfVisitaCollectionNewVisita.equals(propiedad)) {
-                        oldNumpropiedadOfVisitaCollectionNewVisita.getVisitaCollection().remove(visitaCollectionNewVisita);
-                        oldNumpropiedadOfVisitaCollectionNewVisita = em.merge(oldNumpropiedadOfVisitaCollectionNewVisita);
+            for (Visita visitaListNewVisita : visitaListNew) {
+                if (!visitaListOld.contains(visitaListNewVisita)) {
+                    Propiedad oldNumpropiedadOfVisitaListNewVisita = visitaListNewVisita.getNumpropiedad();
+                    visitaListNewVisita.setNumpropiedad(propiedad);
+                    visitaListNewVisita = em.merge(visitaListNewVisita);
+                    if (oldNumpropiedadOfVisitaListNewVisita != null && !oldNumpropiedadOfVisitaListNewVisita.equals(propiedad)) {
+                        oldNumpropiedadOfVisitaListNewVisita.getVisitaList().remove(visitaListNewVisita);
+                        oldNumpropiedadOfVisitaListNewVisita = em.merge(oldNumpropiedadOfVisitaListNewVisita);
                     }
                 }
             }
@@ -167,19 +166,19 @@ public class PropiedadJpaController implements Serializable {
                 throw new NonexistentEntityException("The propiedad with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Visita> visitaCollectionOrphanCheck = propiedad.getVisitaCollection();
-            for (Visita visitaCollectionOrphanCheckVisita : visitaCollectionOrphanCheck) {
+            List<Visita> visitaListOrphanCheck = propiedad.getVisitaList();
+            for (Visita visitaListOrphanCheckVisita : visitaListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Propiedad (" + propiedad + ") cannot be destroyed since the Visita " + visitaCollectionOrphanCheckVisita + " in its visitaCollection field has a non-nullable numpropiedad field.");
+                illegalOrphanMessages.add("This Propiedad (" + propiedad + ") cannot be destroyed since the Visita " + visitaListOrphanCheckVisita + " in its visitaList field has a non-nullable numpropiedad field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Empleado numempleado = propiedad.getNumempleado();
             if (numempleado != null) {
-                numempleado.getPropiedadCollection().remove(propiedad);
+                numempleado.getPropiedadList().remove(propiedad);
                 numempleado = em.merge(numempleado);
             }
             em.remove(propiedad);

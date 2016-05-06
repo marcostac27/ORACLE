@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import MODELO.Totpropempleado;
 import MODELO.Propiedad;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,8 +37,8 @@ public class EmpleadoJpaController implements Serializable {
     }
 
     public void create(Empleado empleado) throws PreexistingEntityException, Exception {
-        if (empleado.getPropiedadCollection() == null) {
-            empleado.setPropiedadCollection(new ArrayList<Propiedad>());
+        if (empleado.getPropiedadList() == null) {
+            empleado.setPropiedadList(new ArrayList<Propiedad>());
         }
         EntityManager em = null;
         try {
@@ -50,12 +49,12 @@ public class EmpleadoJpaController implements Serializable {
                 totpropempleado = em.getReference(totpropempleado.getClass(), totpropempleado.getNumempleado());
                 empleado.setTotpropempleado(totpropempleado);
             }
-            Collection<Propiedad> attachedPropiedadCollection = new ArrayList<Propiedad>();
-            for (Propiedad propiedadCollectionPropiedadToAttach : empleado.getPropiedadCollection()) {
-                propiedadCollectionPropiedadToAttach = em.getReference(propiedadCollectionPropiedadToAttach.getClass(), propiedadCollectionPropiedadToAttach.getNumpropiedad());
-                attachedPropiedadCollection.add(propiedadCollectionPropiedadToAttach);
+            List<Propiedad> attachedPropiedadList = new ArrayList<Propiedad>();
+            for (Propiedad propiedadListPropiedadToAttach : empleado.getPropiedadList()) {
+                propiedadListPropiedadToAttach = em.getReference(propiedadListPropiedadToAttach.getClass(), propiedadListPropiedadToAttach.getNumpropiedad());
+                attachedPropiedadList.add(propiedadListPropiedadToAttach);
             }
-            empleado.setPropiedadCollection(attachedPropiedadCollection);
+            empleado.setPropiedadList(attachedPropiedadList);
             em.persist(empleado);
             if (totpropempleado != null) {
                 Empleado oldEmpleadoOfTotpropempleado = totpropempleado.getEmpleado();
@@ -66,13 +65,13 @@ public class EmpleadoJpaController implements Serializable {
                 totpropempleado.setEmpleado(empleado);
                 totpropempleado = em.merge(totpropempleado);
             }
-            for (Propiedad propiedadCollectionPropiedad : empleado.getPropiedadCollection()) {
-                Empleado oldNumempleadoOfPropiedadCollectionPropiedad = propiedadCollectionPropiedad.getNumempleado();
-                propiedadCollectionPropiedad.setNumempleado(empleado);
-                propiedadCollectionPropiedad = em.merge(propiedadCollectionPropiedad);
-                if (oldNumempleadoOfPropiedadCollectionPropiedad != null) {
-                    oldNumempleadoOfPropiedadCollectionPropiedad.getPropiedadCollection().remove(propiedadCollectionPropiedad);
-                    oldNumempleadoOfPropiedadCollectionPropiedad = em.merge(oldNumempleadoOfPropiedadCollectionPropiedad);
+            for (Propiedad propiedadListPropiedad : empleado.getPropiedadList()) {
+                Empleado oldNumempleadoOfPropiedadListPropiedad = propiedadListPropiedad.getNumempleado();
+                propiedadListPropiedad.setNumempleado(empleado);
+                propiedadListPropiedad = em.merge(propiedadListPropiedad);
+                if (oldNumempleadoOfPropiedadListPropiedad != null) {
+                    oldNumempleadoOfPropiedadListPropiedad.getPropiedadList().remove(propiedadListPropiedad);
+                    oldNumempleadoOfPropiedadListPropiedad = em.merge(oldNumempleadoOfPropiedadListPropiedad);
                 }
             }
             em.getTransaction().commit();
@@ -96,8 +95,8 @@ public class EmpleadoJpaController implements Serializable {
             Empleado persistentEmpleado = em.find(Empleado.class, empleado.getNumempleado());
             Totpropempleado totpropempleadoOld = persistentEmpleado.getTotpropempleado();
             Totpropempleado totpropempleadoNew = empleado.getTotpropempleado();
-            Collection<Propiedad> propiedadCollectionOld = persistentEmpleado.getPropiedadCollection();
-            Collection<Propiedad> propiedadCollectionNew = empleado.getPropiedadCollection();
+            List<Propiedad> propiedadListOld = persistentEmpleado.getPropiedadList();
+            List<Propiedad> propiedadListNew = empleado.getPropiedadList();
             List<String> illegalOrphanMessages = null;
             if (totpropempleadoOld != null && !totpropempleadoOld.equals(totpropempleadoNew)) {
                 if (illegalOrphanMessages == null) {
@@ -112,13 +111,13 @@ public class EmpleadoJpaController implements Serializable {
                 totpropempleadoNew = em.getReference(totpropempleadoNew.getClass(), totpropempleadoNew.getNumempleado());
                 empleado.setTotpropempleado(totpropempleadoNew);
             }
-            Collection<Propiedad> attachedPropiedadCollectionNew = new ArrayList<Propiedad>();
-            for (Propiedad propiedadCollectionNewPropiedadToAttach : propiedadCollectionNew) {
-                propiedadCollectionNewPropiedadToAttach = em.getReference(propiedadCollectionNewPropiedadToAttach.getClass(), propiedadCollectionNewPropiedadToAttach.getNumpropiedad());
-                attachedPropiedadCollectionNew.add(propiedadCollectionNewPropiedadToAttach);
+            List<Propiedad> attachedPropiedadListNew = new ArrayList<Propiedad>();
+            for (Propiedad propiedadListNewPropiedadToAttach : propiedadListNew) {
+                propiedadListNewPropiedadToAttach = em.getReference(propiedadListNewPropiedadToAttach.getClass(), propiedadListNewPropiedadToAttach.getNumpropiedad());
+                attachedPropiedadListNew.add(propiedadListNewPropiedadToAttach);
             }
-            propiedadCollectionNew = attachedPropiedadCollectionNew;
-            empleado.setPropiedadCollection(propiedadCollectionNew);
+            propiedadListNew = attachedPropiedadListNew;
+            empleado.setPropiedadList(propiedadListNew);
             empleado = em.merge(empleado);
             if (totpropempleadoNew != null && !totpropempleadoNew.equals(totpropempleadoOld)) {
                 Empleado oldEmpleadoOfTotpropempleado = totpropempleadoNew.getEmpleado();
@@ -129,20 +128,20 @@ public class EmpleadoJpaController implements Serializable {
                 totpropempleadoNew.setEmpleado(empleado);
                 totpropempleadoNew = em.merge(totpropempleadoNew);
             }
-            for (Propiedad propiedadCollectionOldPropiedad : propiedadCollectionOld) {
-                if (!propiedadCollectionNew.contains(propiedadCollectionOldPropiedad)) {
-                    propiedadCollectionOldPropiedad.setNumempleado(null);
-                    propiedadCollectionOldPropiedad = em.merge(propiedadCollectionOldPropiedad);
+            for (Propiedad propiedadListOldPropiedad : propiedadListOld) {
+                if (!propiedadListNew.contains(propiedadListOldPropiedad)) {
+                    propiedadListOldPropiedad.setNumempleado(null);
+                    propiedadListOldPropiedad = em.merge(propiedadListOldPropiedad);
                 }
             }
-            for (Propiedad propiedadCollectionNewPropiedad : propiedadCollectionNew) {
-                if (!propiedadCollectionOld.contains(propiedadCollectionNewPropiedad)) {
-                    Empleado oldNumempleadoOfPropiedadCollectionNewPropiedad = propiedadCollectionNewPropiedad.getNumempleado();
-                    propiedadCollectionNewPropiedad.setNumempleado(empleado);
-                    propiedadCollectionNewPropiedad = em.merge(propiedadCollectionNewPropiedad);
-                    if (oldNumempleadoOfPropiedadCollectionNewPropiedad != null && !oldNumempleadoOfPropiedadCollectionNewPropiedad.equals(empleado)) {
-                        oldNumempleadoOfPropiedadCollectionNewPropiedad.getPropiedadCollection().remove(propiedadCollectionNewPropiedad);
-                        oldNumempleadoOfPropiedadCollectionNewPropiedad = em.merge(oldNumempleadoOfPropiedadCollectionNewPropiedad);
+            for (Propiedad propiedadListNewPropiedad : propiedadListNew) {
+                if (!propiedadListOld.contains(propiedadListNewPropiedad)) {
+                    Empleado oldNumempleadoOfPropiedadListNewPropiedad = propiedadListNewPropiedad.getNumempleado();
+                    propiedadListNewPropiedad.setNumempleado(empleado);
+                    propiedadListNewPropiedad = em.merge(propiedadListNewPropiedad);
+                    if (oldNumempleadoOfPropiedadListNewPropiedad != null && !oldNumempleadoOfPropiedadListNewPropiedad.equals(empleado)) {
+                        oldNumempleadoOfPropiedadListNewPropiedad.getPropiedadList().remove(propiedadListNewPropiedad);
+                        oldNumempleadoOfPropiedadListNewPropiedad = em.merge(oldNumempleadoOfPropiedadListNewPropiedad);
                     }
                 }
             }
@@ -186,10 +185,10 @@ public class EmpleadoJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<Propiedad> propiedadCollection = empleado.getPropiedadCollection();
-            for (Propiedad propiedadCollectionPropiedad : propiedadCollection) {
-                propiedadCollectionPropiedad.setNumempleado(null);
-                propiedadCollectionPropiedad = em.merge(propiedadCollectionPropiedad);
+            List<Propiedad> propiedadList = empleado.getPropiedadList();
+            for (Propiedad propiedadListPropiedad : propiedadList) {
+                propiedadListPropiedad.setNumempleado(null);
+                propiedadListPropiedad = em.merge(propiedadListPropiedad);
             }
             em.remove(empleado);
             em.getTransaction().commit();

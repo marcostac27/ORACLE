@@ -6,7 +6,6 @@
 package dreamhome;
 
 import CONTROLADOR.ConexionEM;
-import CONTROLADOR.PropiedadDB;
 import CONTROLADOR.PropiedadJpaController;
 import MODELO.Empleado;
 import MODELO.Propiedad;
@@ -24,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public final class MantenedorPropiedad extends javax.swing.JFrame {
 
     ArrayList<Propiedad> propiedad;
-    PropiedadDB db = new PropiedadDB();
+   // PropiedadDB db = new PropiedadDB();
     EntityManager con =  ConexionEM.getConexion();
     PropiedadJpaController  control_propiedad = new PropiedadJpaController();
     
@@ -386,7 +385,7 @@ public void LimpiarFormulario(){
                 modelo2.setValueAt(listPropiedad.get(i).getRenta(), i, 5);
                 modelo2.setValueAt(listPropiedad.get(i).getHab(), i, 6);
                 modelo2.setValueAt(listPropiedad.get(i).getNumpropietario(), i, 7);
-                modelo2.setValueAt(listPropiedad.get(i).getNumempleado(), i, 8);
+                modelo2.setValueAt(listPropiedad.get(i).getNumempleado().getNumempleado(), i, 8);
                 
             }
             

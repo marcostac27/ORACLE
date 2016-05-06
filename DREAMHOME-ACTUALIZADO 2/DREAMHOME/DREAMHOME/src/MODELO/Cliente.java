@@ -8,7 +8,7 @@ package MODELO;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author cetecom
+ * @author Francisco
  */
 @Entity
 @Table(name = "CLIENTE")
@@ -58,7 +58,7 @@ public class Cliente implements Serializable {
     @Column(name = "MAXRENT")
     private BigInteger maxrent;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "numcliente")
-    private Collection<Visita> visitaCollection;
+    private List<Visita> visitaList;
 
     public Cliente() {
     }
@@ -124,12 +124,12 @@ public class Cliente implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Visita> getVisitaCollection() {
-        return visitaCollection;
+    public List<Visita> getVisitaList() {
+        return visitaList;
     }
 
-    public void setVisitaCollection(Collection<Visita> visitaCollection) {
-        this.visitaCollection = visitaCollection;
+    public void setVisitaList(List<Visita> visitaList) {
+        this.visitaList = visitaList;
     }
 
     @Override

@@ -7,7 +7,7 @@ package MODELO;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author cetecom
+ * @author Francisco
  */
 @Entity
 @Table(name = "PROPIEDAD")
@@ -65,7 +65,7 @@ public class Propiedad implements Serializable {
     @ManyToOne
     private Empleado numempleado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "numpropiedad")
-    private Collection<Visita> visitaCollection;
+    private List<Visita> visitaList;
 
     public Propiedad() {
     }
@@ -152,12 +152,12 @@ public class Propiedad implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Visita> getVisitaCollection() {
-        return visitaCollection;
+    public List<Visita> getVisitaList() {
+        return visitaList;
     }
 
-    public void setVisitaCollection(Collection<Visita> visitaCollection) {
-        this.visitaCollection = visitaCollection;
+    public void setVisitaList(List<Visita> visitaList) {
+        this.visitaList = visitaList;
     }
 
     @Override

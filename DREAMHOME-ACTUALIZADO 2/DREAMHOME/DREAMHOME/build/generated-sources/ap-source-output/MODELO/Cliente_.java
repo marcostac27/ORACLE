@@ -4,11 +4,11 @@ import MODELO.Visita;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.annotation.Generated;
-import javax.persistence.metamodel.CollectionAttribute;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-05-05T23:02:35")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-05-05T23:19:22")
 @StaticMetamodel(Cliente.class)
 public class Cliente_ { 
 
@@ -17,8 +17,8 @@ public class Cliente_ {
     public static volatile SingularAttribute<Cliente, BigDecimal> numcliente;
     public static volatile SingularAttribute<Cliente, String> apellido;
     public static volatile SingularAttribute<Cliente, String> direccion;
+    public static volatile ListAttribute<Cliente, Visita> visitaList;
     public static volatile SingularAttribute<Cliente, String> telefono;
-    public static volatile CollectionAttribute<Cliente, Visita> visitaCollection;
     public static volatile SingularAttribute<Cliente, String> nombre;
 
 }

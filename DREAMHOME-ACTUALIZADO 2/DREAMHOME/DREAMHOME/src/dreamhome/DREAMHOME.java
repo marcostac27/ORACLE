@@ -7,14 +7,11 @@ package dreamhome;
 
 import CONTROLADOR.ConexionEM;
 import MODELO.Empleado;
-import com.sun.xml.internal.stream.Entity;
 import java.math.BigInteger;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.persistence.EntityManager;
-import oracle.sql.DATE;
 
 /**
  *
