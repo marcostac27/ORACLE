@@ -86,7 +86,9 @@ public void Actualizar(){
         p.setHab(new BigInteger(txtNumHab.getText()));
         p.setNumpropietario(txtNumPropietario.getText());
         p.setNumempleado(e);
-        
+        con.getTransaction().begin();
+        con.persist(p);
+        con.getTransaction().commit();
         JOptionPane.showMessageDialog(null,"Propiedad Nº "+txtNumPropiedad.getText()+" Ediatdo con Exito ","Editar Propiedad",JOptionPane.INFORMATION_MESSAGE);
             p=null;
         }else{
