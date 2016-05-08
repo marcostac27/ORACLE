@@ -475,7 +475,7 @@ public boolean camposLLenos(){
         if (fila!=-1) {
            
           
-            Empleado e= con.find(Empleado.class, (String)tblPropiedad.getValueAt(fila,5));
+            Empleado e= con.find(Empleado.class, (String)tblPropiedad.getValueAt(fila,8));
             if (e!=null) {
             p=new Propiedad();
             p.setNumpropiedad((String)tblPropiedad.getValueAt(fila,0));
@@ -484,12 +484,13 @@ public boolean camposLLenos(){
             p.setCiudad((String)tblPropiedad.getValueAt(fila,2));
             p.setCodigopostal((String)tblPropiedad.getValueAt(fila,3));
             p.setTipo((String)tblPropiedad.getValueAt(fila,4));
-            p.setHab(new BigInteger((String)tblPropiedad.getValueAt(fila,6)));
-            p.setRenta(new BigInteger((String)tblPropiedad.getValueAt(fila,5)));
-            }
-            p.setNumpropietario((String)tblPropiedad.getValueAt(fila,8));
+            p.setHab(new BigInteger(tblPropiedad.getValueAt(fila,6).toString()));
+            p.setRenta(new BigInteger(tblPropiedad.getValueAt(fila,5).toString()));
+             p.setNumpropietario((String)tblPropiedad.getValueAt(fila,7));
             
             p.setNumempleado(e);
+            }
+           
             
         }
         
