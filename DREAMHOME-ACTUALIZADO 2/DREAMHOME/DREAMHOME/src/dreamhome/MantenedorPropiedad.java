@@ -42,6 +42,18 @@ public void LimpiarFormulario(){
         tb.removeRow(i);
     }
 }
+public boolean Eliminar_propiedad(String id){
+    con.getTransaction().begin();
+    Propiedad p=con.find(Propiedad.class, id);
+    boolean eliminado=false;
+    if (p!=null) {
+        eliminado=true;
+    }
+    con.remove(p);
+    con.getTransaction().commit();
+    return eliminado;
+    
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -291,6 +303,15 @@ public void LimpiarFormulario(){
 
     private void btnEliminarPropiedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPropiedadActionPerformed
         // TODO add your handling code here:
+        if (Eliminar_propiedad(txtNumPropiedad.getText())) {
+            JOptionPane.showMessageDialog(null,"Pripiedad Nº "+txtNumPropiedad+" Eliminado ","Eliminar Propiedad",JOptionPane.OK_OPTION);
+            
+        }else
+        {
+            JOptionPane.showMessageDialog(null,"Pripiedad Nº "+txtNumPropiedad+" NO se pudo Eliminar","Eliminar Propiedad",JOptionPane.ERROR_MESSAGE);
+            
+        }
+        
     }//GEN-LAST:event_btnEliminarPropiedadActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
