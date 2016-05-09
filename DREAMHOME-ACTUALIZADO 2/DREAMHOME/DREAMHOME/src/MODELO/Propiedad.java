@@ -5,6 +5,8 @@
  */
 package MODELO;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
@@ -19,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Propiedad.findByRenta", query = "SELECT p FROM Propiedad p WHERE p.renta = :renta"),
     @NamedQuery(name = "Propiedad.findByNumpropietario", query = "SELECT p FROM Propiedad p WHERE p.numpropietario = :numpropietario")})
 public class Propiedad implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -84,7 +90,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setNumpropiedad(String numpropiedad) {
+        String oldNumpropiedad = this.numpropiedad;
         this.numpropiedad = numpropiedad;
+        changeSupport.firePropertyChange("numpropiedad", oldNumpropiedad, numpropiedad);
     }
 
     public String getCalle() {
@@ -92,7 +100,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setCalle(String calle) {
+        String oldCalle = this.calle;
         this.calle = calle;
+        changeSupport.firePropertyChange("calle", oldCalle, calle);
     }
 
     public String getCiudad() {
@@ -100,7 +110,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setCiudad(String ciudad) {
+        String oldCiudad = this.ciudad;
         this.ciudad = ciudad;
+        changeSupport.firePropertyChange("ciudad", oldCiudad, ciudad);
     }
 
     public String getCodigopostal() {
@@ -108,7 +120,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setCodigopostal(String codigopostal) {
+        String oldCodigopostal = this.codigopostal;
         this.codigopostal = codigopostal;
+        changeSupport.firePropertyChange("codigopostal", oldCodigopostal, codigopostal);
     }
 
     public String getTipo() {
@@ -116,7 +130,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setTipo(String tipo) {
+        String oldTipo = this.tipo;
         this.tipo = tipo;
+        changeSupport.firePropertyChange("tipo", oldTipo, tipo);
     }
 
     public BigInteger getHab() {
@@ -124,7 +140,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setHab(BigInteger hab) {
+        BigInteger oldHab = this.hab;
         this.hab = hab;
+        changeSupport.firePropertyChange("hab", oldHab, hab);
     }
 
     public BigInteger getRenta() {
@@ -132,7 +150,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setRenta(BigInteger renta) {
+        BigInteger oldRenta = this.renta;
         this.renta = renta;
+        changeSupport.firePropertyChange("renta", oldRenta, renta);
     }
 
     public String getNumpropietario() {
@@ -140,7 +160,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setNumpropietario(String numpropietario) {
+        String oldNumpropietario = this.numpropietario;
         this.numpropietario = numpropietario;
+        changeSupport.firePropertyChange("numpropietario", oldNumpropietario, numpropietario);
     }
 
     public Empleado getNumempleado() {
@@ -148,7 +170,9 @@ public class Propiedad implements Serializable {
     }
 
     public void setNumempleado(Empleado numempleado) {
+        Empleado oldNumempleado = this.numempleado;
         this.numempleado = numempleado;
+        changeSupport.firePropertyChange("numempleado", oldNumempleado, numempleado);
     }
 
     @XmlTransient
@@ -183,6 +207,14 @@ public class Propiedad implements Serializable {
     @Override
     public String toString() {
         return "MODELO.Propiedad[ numpropiedad=" + numpropiedad + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

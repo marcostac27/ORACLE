@@ -5,6 +5,8 @@
  */
 package MODELO;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -21,6 +23,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,6 +45,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleado.findBySalario", query = "SELECT e FROM Empleado e WHERE e.salario = :salario"),
     @NamedQuery(name = "Empleado.findByNumoficina", query = "SELECT e FROM Empleado e WHERE e.numoficina = :numoficina")})
 public class Empleado implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -80,7 +86,9 @@ public class Empleado implements Serializable {
     }
 
     public void setNumempleado(String numempleado) {
+        String oldNumempleado = this.numempleado;
         this.numempleado = numempleado;
+        changeSupport.firePropertyChange("numempleado", oldNumempleado, numempleado);
     }
 
     public String getNombre() {
@@ -88,7 +96,9 @@ public class Empleado implements Serializable {
     }
 
     public void setNombre(String nombre) {
+        String oldNombre = this.nombre;
         this.nombre = nombre;
+        changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
     public String getApellido() {
@@ -96,7 +106,9 @@ public class Empleado implements Serializable {
     }
 
     public void setApellido(String apellido) {
+        String oldApellido = this.apellido;
         this.apellido = apellido;
+        changeSupport.firePropertyChange("apellido", oldApellido, apellido);
     }
 
     public String getCargo() {
@@ -104,7 +116,9 @@ public class Empleado implements Serializable {
     }
 
     public void setCargo(String cargo) {
+        String oldCargo = this.cargo;
         this.cargo = cargo;
+        changeSupport.firePropertyChange("cargo", oldCargo, cargo);
     }
 
     public String getSexo() {
@@ -112,7 +126,9 @@ public class Empleado implements Serializable {
     }
 
     public void setSexo(String sexo) {
+        String oldSexo = this.sexo;
         this.sexo = sexo;
+        changeSupport.firePropertyChange("sexo", oldSexo, sexo);
     }
 
     public Date getFechnac() {
@@ -120,7 +136,9 @@ public class Empleado implements Serializable {
     }
 
     public void setFechnac(Date fechnac) {
+        Date oldFechnac = this.fechnac;
         this.fechnac = fechnac;
+        changeSupport.firePropertyChange("fechnac", oldFechnac, fechnac);
     }
 
     public BigInteger getSalario() {
@@ -128,7 +146,9 @@ public class Empleado implements Serializable {
     }
 
     public void setSalario(BigInteger salario) {
+        BigInteger oldSalario = this.salario;
         this.salario = salario;
+        changeSupport.firePropertyChange("salario", oldSalario, salario);
     }
 
     public BigInteger getNumoficina() {
@@ -136,7 +156,9 @@ public class Empleado implements Serializable {
     }
 
     public void setNumoficina(BigInteger numoficina) {
+        BigInteger oldNumoficina = this.numoficina;
         this.numoficina = numoficina;
+        changeSupport.firePropertyChange("numoficina", oldNumoficina, numoficina);
     }
 
     @XmlTransient
@@ -179,6 +201,14 @@ public class Empleado implements Serializable {
     @Override
     public String toString() {
         return "MODELO.Empleado[ numempleado=" + numempleado + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
